@@ -67,8 +67,12 @@ def end_screen(window, elapsed_time, targets_pressed, clicks):
 
     hits_label = LABEL_FONT.render(f"Hits: {targets_pressed}", 1, "white")
 
-    accuracy = round(targets_pressed / clicks * 100, 1)
-    accuracy_label = LABEL_FONT.render(f"Accuracy: {accuracy}%", 1, "white")
+    if clicks != 0:
+        accuracy = round(targets_pressed / clicks * 100, 1)
+        accuracy_label = LABEL_FONT.render(f"Accuracy: {accuracy}%", 1, "white")
+    else:
+        accuracy = "No target Collision..!"
+        accuracy_label = LABEL_FONT.render(f"Accuracy: {accuracy}", 1, "white")
 
     window.blit(time_label, (get_middle(time_label), 100))
     window.blit(speed_label, (get_middle(speed_label), 200))

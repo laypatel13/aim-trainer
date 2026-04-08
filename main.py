@@ -53,8 +53,35 @@ def draw_top_bar(window, elapsed_time, targets_pressed, misses):
     window.blit(hits_label, (450, 5))
     window.blit(lives_label, (650, 5))
 
+def get_middle(surface):
+    return WIDTH / 2 - surface.get_width()/2
 
 
+def end_screen(window, elapsed_time, targets_pressed, clicks):
+    window.fill(BG_COLOR)
+
+    time_label = LABEL_FONT.render(f"Time: {format_time(elapsed_time)}", 1, "white")
+
+    speed = round(targets_pressed / elapsed_time, 1)
+    speed_label = LABEL_FONT.render(f"Speed: {speed} t/s", 1, "white")
+
+    hits_label = LABEL_FONT.render(f"Hits: {targets_pressed}", 1, "white")
+
+    accuracy = round(targets_pressed / clicks * 100, 1)
+    accuracy_label = LABEL_FONT.render(f"Accuracy: {accuracy}%", 1, "white")
+
+    window.blit(time_label, (get_middle(time_label), 100))
+    window.blit(speed_label, (get_middle(speed_label), 200))
+    window.blit(hits_label, (get_middle(hits_label), 300))
+    window.blit(accuracy_label, (get_middle(accuracy_label), 400))
+
+    pygame.display.update()
+
+    run = True
+    while run:
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT or event.type == pygame.KEYDOWN:
+                quit()
 
 def main():
     run = True
@@ -101,7 +128,7 @@ def main():
                 targets_pressed += 1
 
         if misses >= LIVES:
-            pass # we have to end it here..!
+            end_screen(WIN, elapsed_time, targets_pressed, clicks)
 
         draw(WIN, targets)
         draw_top_bar(WIN, elapsed_time, targets_pressed, misses)
